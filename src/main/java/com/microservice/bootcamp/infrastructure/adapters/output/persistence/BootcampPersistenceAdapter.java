@@ -6,6 +6,7 @@ import com.microservice.bootcamp.infrastructure.adapters.output.persistence.mapp
 import com.microservice.bootcamp.infrastructure.adapters.output.persistence.repository.BootcampRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 @Component
@@ -22,5 +23,10 @@ public class BootcampPersistenceAdapter implements BootcampPersistencePort {
     @Override
     public Mono<Boolean> existsByName(String name) {
         return repository.existsByName(name);
+    }
+
+    @Override
+    public Flux<Bootcamp> findAll() {
+        return repository.findAll().map(mapper::fromBootcampEntityToBootcamp);
     }
 }
